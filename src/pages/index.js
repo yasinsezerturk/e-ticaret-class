@@ -1,4 +1,5 @@
-//// pages klasöründeki dosyaları toplu şekilde import edebilmek için oluşturulmuştur.
+//// pages klasöründeki dosyaları toplu şekilde import edebilmek için 
+// oluşturulmuştur.
 export {default as Admin} from "./admin/Admin";
 export {default as Cart} from "./cart/Cart";
 export {default as Contact} from "./contact/Contact";
