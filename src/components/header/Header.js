@@ -1,17 +1,53 @@
 //// tüm linklerin olduğu başlık kısmı
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
-import { Link, NavLink,useNavigate } from "react-router-dom";
-import { FaShoppingCart,FaTimes } from "react-icons/fa";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { signOut } from "firebase/auth";
-import {auth} from "../../firebase/config"
-import {toast} from "react-toastify"
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../firebase/config";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import {
+  SET_ACTIVE_USER,
+  REMOVE_ACTIVE_USER,
+} from "../../redux/slice/authSlice";
+import { ShowOnLogin, ShowOnLogout } from "../hiddenLink/hiddenLink";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
 
-  const navigate=useNavigate()
+  const [displayName, setDisplayName] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (user.displayName === null) {
+          const u1 = user.email.slice(0, user.email.lastIndexOf("@"));
+          const uName = u1.charAt(0).toUpperCase() + u1.slice(1);
+          setDisplayName(uName);
+        } else {
+          setDisplayName(user.displayName);
+        }
+        // const uid = user.uid;
+
+        // console.log(user)
+        dispatch(
+          SET_ACTIVE_USER({
+            email: user.email,
+            userName: user.displayName ? user.displayName : displayName,
+            userId: user.uid,
+          })
+        );
+      } else {
+        setDisplayName("");
+        dispatch(REMOVE_ACTIVE_USER());
+      }
+    });
+  }, [dispatch, displayName]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -21,14 +57,16 @@ const Header = () => {
     setShowMenu(false);
   };
 
-  const logoutUser=()=>{
-    signOut(auth).then(() => {
-      toast.success("Çıkış başarılı..")
-      navigate("/")
-    }).catch((error) => {
-      toast.error(error.message)
-    });
-  }
+  const logoutUser = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Çıkış başarılı..");
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   const logo = (
     <div className={styles.logo}>
@@ -47,8 +85,8 @@ const Header = () => {
         <p>0</p>
       </Link>
     </span>
-  )
-  const activeLink=(({isActive})=>(isActive ? `${styles.active}`:""))
+  );
+  const activeLink = ({ isActive }) => (isActive ? `${styles.active}` : "");
   return (
     <header>
       <div className={styles.header}>
@@ -63,32 +101,51 @@ const Header = () => {
               showMenu
                 ? `${styles["nav-wrapper"]} ${styles["show-nav-wrapper"]}`
                 : `${styles["nav-wrapper"]}`
-            } onClick={hideMenu}
+            }
+            onClick={hideMenu}
           ></div>
           <ul onClick={hideMenu}>
             <li className={styles["logo-mobile"]}>
-            {logo}
-            <FaTimes size={22} color="#fff" onClick={hideMenu}/>
+              {logo}
+              <FaTimes size={22} color="#fff" onClick={hideMenu} />
             </li>
             <li>
-              <NavLink to="/" className={activeLink}>Home</NavLink>
+              <NavLink to="/" className={activeLink}>
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/contact" className={activeLink}>Contact Us</NavLink>
+              <NavLink to="/contact" className={activeLink}>
+                Contact Us
+              </NavLink>
             </li>
           </ul>
           <div className={styles["header-right"]} onClick={hideMenu}>
             <span className={styles.links}>
-              <NavLink to="/login" className={activeLink}>Login</NavLink>
-              <NavLink to="/order-history" className={activeLink}>My Orders</NavLink>
-              <NavLink to="/" onClick={logoutUser}>Logout</NavLink>
+              <ShowOnLogout>
+                <NavLink to="/login" className={activeLink}>
+                  Login
+                </NavLink>
+              </ShowOnLogout>
+              <ShowOnLogin>
+                <a href="#home" style={{ color: "#ff7722" }}>
+                  <FaUserCircle size={16} />
+                  &nbsp; Hi {displayName}
+                </a>
+                <NavLink to="/order-history" className={activeLink}>
+                  My Orders
+                </NavLink>
+                <NavLink to="/" onClick={logoutUser}>
+                  Logout
+                </NavLink>
+              </ShowOnLogin>
             </span>
             {cart}
           </div>
         </nav>
         <div className={styles["menu-icon"]}>
           {cart}
-          <GiHamburgerMenu size={28} onClick={toggleMenu}/>
+          <GiHamburgerMenu size={28} onClick={toggleMenu} />
         </div>
       </div>
     </header>
