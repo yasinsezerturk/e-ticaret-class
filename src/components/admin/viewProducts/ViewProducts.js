@@ -16,23 +16,27 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteObject, ref } from "firebase/storage";
 import Notiflix from "notiflix";
-import { STORE_PRODUCTS, selectProducts } from "../../../redux/slice/productSlice";
+import {
+  STORE_PRODUCTS,
+  selectProducts,
+} from "../../../redux/slice/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useFetchCollection from "../../../customHooks/useFetchCollection";
 
 const ViewProducts = () => {
+  const { data, isLoading } = useFetchCollection("products");
 
-  const {data,isLoading}=useFetchCollection("products")
+  const products = useSelector(selectProducts);
 
-  const products=useSelector(selectProducts)
+  const dispatch = useDispatch();
 
-  const dispatch =useDispatch()
-
-useEffect(()=>{
-  dispatch(STORE_PRODUCTS({
-    products:data
-  }))
-},[data,dispatch])
+  useEffect(() => {
+    dispatch(
+      STORE_PRODUCTS({
+        products: data,
+      })
+    );
+  }, [data, dispatch]);
 
   const confirmDelete = (id, imageURL) => {
     Notiflix.Confirm.show(
@@ -40,17 +44,16 @@ useEffect(()=>{
       "You are about to delete this product?",
       "Delete",
       "Cancel",
-      function okCb(){
-        deleteProduct(id,imageURL)
+      function okCb() {
+        deleteProduct(id, imageURL);
       },
-      function cancelCb(){
-
-      },{
-        width:"320px",
-        borderRadius:"3px",
-        titleColor:"orangered",
-        okButtonBackground:"orangered",
-        cssAnimationStyle:"zoom"
+      function cancelCb() {},
+      {
+        width: "320px",
+        borderRadius: "3px",
+        titleColor: "orangered",
+        okButtonBackground: "orangered",
+        cssAnimationStyle: "zoom",
       }
     );
   };
