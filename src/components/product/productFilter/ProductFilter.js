@@ -8,7 +8,7 @@ import { FILTER_BY_BRAND, FILTER_BY_CATEGORY, FILTER_BY_PRICE } from "../../../r
 const ProductFilter = () => {
   const [category, setCategory] = useState("All");
   const [brand, setBrand]=useState("All")
-  const [price,setPrice]=useState("3000")
+  const [price,setPrice]=useState(null)
   const products = useSelector(selectProducts);
   const minPrice=useSelector(selectMinPrice)
   const maxPrice=useSelector(selectMaxPrice)
@@ -33,6 +33,10 @@ const ProductFilter = () => {
     dispatch(FILTER_BY_PRICE({products,price}))
   },[dispatch,products,price])
 
+  useEffect(()=>{
+    setPrice(maxPrice)
+  },[maxPrice])
+
   const filterProducts = (cat) => {
     setCategory(cat);
     dispatch(FILTER_BY_CATEGORY({ products, category: cat }));
@@ -42,6 +46,7 @@ const ProductFilter = () => {
     setCategory("All")
     setBrand("All")
     setPrice(maxPrice)
+    dispatch(FILTER_BY_CATEGORY({ products, category: "All" }));
   }
   return (
     <div className={styles.filter}>
