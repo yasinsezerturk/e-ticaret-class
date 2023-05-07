@@ -8,7 +8,7 @@ import { FILTER_BY_BRAND, FILTER_BY_CATEGORY, FILTER_BY_PRICE } from "../../../r
 const ProductFilter = () => {
   const [category, setCategory] = useState("All");
   const [brand, setBrand]=useState("All")
-  const [price,setPrice]=useState(null)
+  const [price,setPrice]=useState(0)
   const products = useSelector(selectProducts);
   const minPrice=useSelector(selectMinPrice)
   const maxPrice=useSelector(selectMaxPrice)

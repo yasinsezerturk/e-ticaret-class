@@ -11,12 +11,24 @@ import {
   SORT_PRODUCTS,
   selectFilteredProducts,
 } from "../../../redux/slice/filterSlice";
+import Pagination from "../../pagination/Pagination";
 
 const ProductList = ({ products }) => {
   const [grid, setGrid] = useState(true);
   const [search, setSearch] = useState("");
   const [sort,setSort]=useState("latest")
   const filteredProducts = useSelector(selectFilteredProducts);
+
+  const [currentPage,setCurrentPage]=useState(1)
+
+  const productsPerPage=6
+
+  const indexOfFirstProduct=(currentPage-1)*productsPerPage
+  const indexOfLastProduct=currentPage*productsPerPage
+
+  //9 eleman istiyorsak slice(0,9)(9,18)(18,27) olacaktır.
+  const currentProduct=filteredProducts.slice(indexOfFirstProduct,indexOfLastProduct)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,7 +73,7 @@ const ProductList = ({ products }) => {
           <p>No products found.</p>
         ) : (
           <>
-            {filteredProducts.map((product) => {
+            {currentProduct.map((product) => {
               return (
                 <div key={product.id}>
                   <ProductItem {...product} grid={grid} product={product} />
@@ -71,6 +83,8 @@ const ProductList = ({ products }) => {
           </>
         )}
       </div>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} 
+      productsPerPage={productsPerPage} totalProducts={filteredProducts.length} />
     </div>
   );
 };
