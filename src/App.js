@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header, Footer } from "./components";
-import { Home, Contact, Login, Register, Reset, Admin } from "./pages";
+import { Home, Contact, Login, Register, Reset, Admin, Cart } from "./pages";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminOnlyRoute from "./components/adminOnlyRoute/AdminOnlyRoute";
@@ -28,6 +28,7 @@ const App = () => {
             }
           ></Route>
           <Route path="/product-details/:id" element={<ProductDetails/>}></Route>
+          <Route path="/cart" element={<Cart/>}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>
