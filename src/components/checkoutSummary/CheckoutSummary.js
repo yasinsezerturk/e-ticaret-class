@@ -1,9 +1,10 @@
 //// cart sayfasından checkout sayfasına ulaştığımızda sağ tarafta görünen
 // checkout summary componenti. Proceed to checkout yaptığımızda solda tekrar görünür.
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./CheckoutSummary.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  CALCULATE_SUBTOTAL,
   selectCartItems,
   selectCartTotalAmount,
   selectCartTotalQuantity,
@@ -12,9 +13,16 @@ import { Link } from "react-router-dom";
 import Card from "../card/Card";
 
 const CheckoutSummary = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const cartTotalAmount = useSelector(selectCartTotalAmount);
   const cartTotalQuantity = useSelector(selectCartTotalQuantity);
+  
+
+  useEffect(() => {
+    dispatch(CALCULATE_SUBTOTAL());
+  });
+
   return (
     <div>
       <h3>Checkout Summary</h3>

@@ -2,7 +2,7 @@
 // checkoutdetails componentidir. içinde adres inputları ve
 // checkoutsummary yer alır.
 
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import styles from "./CheckoutDetails.module.scss";
 import Card from "../../components/card/Card";
 import { CountryDropdown } from "react-country-region-selector";
@@ -51,6 +51,9 @@ const CheckoutDetails = () => {
     dispatch(SAVE_BILLING_ADDRESS(billingAddress))
     navigate("/checkout")
   };
+
+  
+
   return (
     <section>
       <div className={`container ${styles.checkout}`}>
