@@ -46,7 +46,7 @@ const Checkout = () => {
       "https://ecommerce-class-backend-d2p3.onrender.com/create-payment-intent",
       {
         method: "POST",
-        header: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: cartItems,
           userEmail: customerEmail,

@@ -1,7 +1,7 @@
 //// cart sayfasından checkout sayfasına ulaşıp, checkout detaylarını girip,
 //  proceed to checkout a bastığımızda karşımıza çıkan iki card a sahip check out
 //  componenti. checkoutsummary componenti de ayrı bir dosyada oluşturulmuştur.
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   PaymentElement,
   useStripe,
@@ -15,7 +15,11 @@ import spinnerImg from "../../assets/spinner.gif";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectEmail, selectUserId } from "../../redux/slice/authSlice";
-import { CLEAR_CART, selectCartItems, selectCartTotalAmount } from "../../redux/slice/cartSlice";
+import {
+  CLEAR_CART,
+  selectCartItems,
+  selectCartTotalAmount,
+} from "../../redux/slice/cartSlice";
 import { selectShippingAddress } from "../../redux/slice/checkoutSlice";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase/config";
@@ -27,14 +31,14 @@ const CheckoutForm = () => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch=useDispatch
-  const navigate=useNavigate
+  const dispatch = useDispatch;
+  const navigate = useNavigate;
 
-  const userID=useSelector(selectUserId)
-  const userEmail=useSelector(selectEmail)
-  const cartItems=useSelector(selectCartItems)
-  const cartTotalAmount=useSelector(selectCartTotalAmount)
-  const shippingAddress=useSelector(selectShippingAddress)
+  const userID = useSelector(selectUserId);
+  const userEmail = useSelector(selectEmail);
+  const cartItems = useSelector(selectCartItems);
+  const cartTotalAmount = useSelector(selectCartTotalAmount);
+  const shippingAddress = useSelector(selectShippingAddress);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,29 +71,29 @@ const CheckoutForm = () => {
 
   const saveOrder = () => {
     // toast.success("Successfully save order");
-    const today=new Date()
+    const today = new Date();
     //tarih bilgisini içeriyor
-    const date=today.toDateString()
+    const date = today.toDateString();
     //saat bilgisini içeriyor
-    const time=today.toLocaleTimeString
-    const orderConfig={
+    const time = today.toLocaleTimeString;
+    const orderConfig = {
       userID,
       userEmail,
-      orderDate:date,
-      orderTime:time,
-      orderAmount:cartTotalAmount,
-      orderStatus:"Order Placed...",
+      orderDate: date,
+      orderTime: time,
+      orderAmount: cartTotalAmount,
+      orderStatus: "Order Placed...",
       cartItems,
       shippingAddress,
-      createdAt:Timestamp.now().ToDate()
-    }
+      createdAt: Timestamp.now().ToDate(),
+    };
     try {
-      addDoc(collection(db,"orders"),orderConfig)
-      toast.success("Order saved")
-      dispatch(CLEAR_CART())
-      navigate("/checkout-success")
+      addDoc(collection(db, "orders"), orderConfig);
+      toast.success("Order saved");
+      dispatch(CLEAR_CART());
+      navigate("/checkout-success");
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   };
 
@@ -113,26 +117,25 @@ const CheckoutForm = () => {
               <PaymentElement
                 id={styles["payment-element"]}
                 options={paymentElementOptions}
+              />
+              <button
+                disabled={isLoading || !stripe || !elements}
+                type="submit"
+                className={styles.button}
               >
-                <button
-                  disabled={isLoading || !stripe || !elements}
-                  type="submit"
-                  className={styles.button}
-                >
-                  <span>
-                    {isLoading ? (
-                      <img
-                        src={spinnerImg}
-                        alt="Loading..."
-                        style={{ width: "20px" }}
-                      />
-                    ) : (
-                      "Pay Now"
-                    )}
-                  </span>
-                </button>
-                {message && <div id={styles["payment-message"]}>{message}</div>}
-              </PaymentElement>
+                <span>
+                  {isLoading ? (
+                    <img
+                      src={spinnerImg}
+                      alt="Loading..."
+                      style={{ width: "20px" }}
+                    />
+                  ) : (
+                    "Pay Now"
+                  )}
+                </span>
+              </button>
+              {message && <div id={styles["payment-message"]}>{message}</div>}
             </Card>
           </div>
         </form>
