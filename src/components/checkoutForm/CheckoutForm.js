@@ -14,7 +14,7 @@ import CheckoutSummary from "../checkoutSummary/CheckoutSummary";
 import spinnerImg from "../../assets/spinner.gif";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectEmail, selectUserId } from "../../redux/slice/authSlice";
+import { selectEmail, selectUserID } from "../../redux/slice/authSlice";
 import {
   CLEAR_CART,
   selectCartItems,
@@ -34,7 +34,7 @@ const CheckoutForm = () => {
   const dispatch = useDispatch;
   const navigate = useNavigate;
 
-  const userID = useSelector(selectUserId);
+  const userID = useSelector(selectUserID);
   const userEmail = useSelector(selectEmail);
   const cartItems = useSelector(selectCartItems);
   const cartTotalAmount = useSelector(selectCartTotalAmount);
@@ -70,12 +70,12 @@ const CheckoutForm = () => {
   };
 
   const saveOrder = () => {
-    // toast.success("Successfully save order");
+    // toast.success("Successfully save order")
     const today = new Date();
-    //tarih bilgisini içeriyor
-    const date = today.toDateString();
+    // tarih bilgisi
+    const date = today.toDateString()
     //saat bilgisini içeriyor
-    const time = today.toLocaleTimeString;
+    const time = today.toLocaleTimeString();
     const orderConfig = {
       userID,
       userEmail,
@@ -85,17 +85,17 @@ const CheckoutForm = () => {
       orderStatus: "Order Placed...",
       cartItems,
       shippingAddress,
-      createdAt: Timestamp.now().ToDate(),
+      createdAt: Timestamp.now().toDate()
     };
     try {
-      addDoc(collection(db, "orders"), orderConfig);
-      toast.success("Order saved");
-      dispatch(CLEAR_CART());
-      navigate("/checkout-success");
+      addDoc(collection(db,"orders"), orderConfig);
+      toast.success("Order saved")
+      dispatch(CLEAR_CART())
+      navigate("/checkout-success")
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
-  };
+  }
 
   const paymentElementOptions = {
     layout: "tabs",

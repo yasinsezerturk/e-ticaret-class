@@ -1,46 +1,43 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Header, Footer } from "./components";
-import { Home, Contact, Login, Register, Reset, Admin, Cart, OrderHistory } from "./pages";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import AdminOnlyRoute from "./components/adminOnlyRoute/AdminOnlyRoute";
-import ProductDetails from "./components/product/productDetails/ProductDetails";
-import CheckoutDetails from "./pages/checkout/CheckoutDetails";
-import Checkout from "./pages/checkout/Checkout";
-import CheckoutSuccess from "./pages/checkout/CheckoutSuccess";
+import React from 'react'
+import {BrowserRouter, Route, Routes} from "react-router-dom"
+import {Header,Footer} from "./components"
+import {Admin, Cart, Contact,Home, Login, OrderHistory, Register, Reset} from "./pages"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AdminOnlyRoute from './components/adminOnlyRoute/AdminOnlyRoute';
+import ProductDetails from "./components/product/productDetails/ProductDetails"
+import CheckoutDetails from './pages/checkout/CheckoutDetails';
+import Checkout from './pages/checkout/Checkout';
+import CheckoutSuccess from './pages/checkout/CheckoutSuccess';
+import OrderDetails from './pages/orderDetails/OrderDetails';
+import ReviewProducts from './components/reviewProducts/ReviewProducts';
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <ToastContainer />
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/reset" element={<Reset />}></Route>
-          <Route
-            path="/admin/*"
-            element={
-              <AdminOnlyRoute>
-                <Admin />
-              </AdminOnlyRoute>
-            }
-          ></Route>
-          <Route path="/product-details/:id" element={<ProductDetails/>}></Route>
-          <Route path="/cart" element={<Cart/>}></Route>
-          <Route path="/checkout-details" element={<CheckoutDetails/>}></Route>
-          <Route path="/checkout" element={<Checkout/>}></Route>
-          <Route path="/checkout-success" element={<CheckoutSuccess/>}></Route>
-          <Route path="/order-history" element={<OrderHistory/>}></Route>
-        </Routes>
-        <Footer />
+      <ToastContainer/>
+      <Header/>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/contact" element={<Contact/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/reset" element={<Reset/>}/>
+        <Route path="/admin/*" element={<AdminOnlyRoute><Admin/></AdminOnlyRoute>}/>
+        <Route path="/product-details/:id" element={<ProductDetails/>}/>
+        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/checkout-details" element={<CheckoutDetails/>}/>
+        <Route path="/checkout" element={<Checkout/>}/>
+        <Route path="/checkout-success" element={<CheckoutSuccess/>}/>
+        <Route path="/order-history" element={<OrderHistory/>}/>
+        <Route path="/order-details/:id" element={<OrderDetails/>}/>
+        <Route path="/review-product/:id" element={<ReviewProducts/>} />
+      </Routes>
+      <Footer/>
       </BrowserRouter>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
