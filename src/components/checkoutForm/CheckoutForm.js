@@ -31,8 +31,8 @@ const CheckoutForm = () => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch;
-  const navigate = useNavigate;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userID = useSelector(selectUserID);
   const userEmail = useSelector(selectEmail);
