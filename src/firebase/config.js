@@ -10,7 +10,7 @@ import {getFirestore} from "firebase/firestore"
 import {getStorage} from "firebase/storage"
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCk_BBJfjtb8eX4MryNk5hlbpjFfZXd-Hw",
+  apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: "e-ticaret-class-3da97.firebaseapp.com",
   projectId: "e-ticaret-class-3da97",
   storageBucket: "e-ticaret-class-3da97.appspot.com",
